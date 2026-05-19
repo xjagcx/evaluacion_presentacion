@@ -4,6 +4,10 @@ let config = null;
 let student = null;
 let state = null;
 let refreshTimer = null;
+let isSubmitting = false;
+let currentFormPresenterId = null;
+let draftScores = {};
+let draftComment = '';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -38,6 +42,35 @@ function showMessage(message, type = '') {
   notice.classList.remove('hidden');
 }
 
+function captureDraft() {
+  if (!state?.criteria || $('#evaluation-form')?.classList.contains('hidden')) return;
+  for (const c of state.criteria) {
+    const checked = document.querySelector(`input[name="score-${CSS.escape(c.key)}"]:checked`);
+    if (checked) draftScores[c.key] = Number(checked.value);
+  }
+  const comment = $('#comment');
+  if (comment) draftComment = comment.value;
+}
+
+function applyDraft() {
+  if (!state?.criteria) return;
+  for (const c of state.criteria) {
+    const value = draftScores[c.key];
+    if (value) {
+      const input = document.querySelector(`input[name="score-${CSS.escape(c.key)}"][value="${value}"]`);
+      if (input) input.checked = true;
+    }
+  }
+  const comment = $('#comment');
+  if (comment && document.activeElement !== comment) comment.value = draftComment;
+}
+
+function resetDraft() {
+  draftScores = {};
+  draftComment = '';
+  currentFormPresenterId = null;
+}
+
 async function loadConfig() {
   config = await api('/api/config');
   const select = $('#student-select');
@@ -68,6 +101,7 @@ function startRefresh() {
 async function loadState() {
   if (!student) return;
   try {
+    captureDraft();
     state = await api(`/api/state?studentId=${encodeURIComponent(student.id)}`);
     renderState();
   } catch (err) {
@@ -81,6 +115,8 @@ function renderState() {
 
   if (!state.activePresenter || state.status !== 'open') {
     $('#presentation-card').classList.add('hidden');
+    $('#evaluation-form').classList.add('hidden');
+    resetDraft();
     showMessage('No hay una evaluación activa en este momento. Espera a que el profesor active al ponente.', 'warn');
     return;
   }
@@ -93,19 +129,34 @@ function renderState() {
 
   if (state.isSelfPresenter) {
     $('#evaluation-form').classList.add('hidden');
+    resetDraft();
     showMessage('Esta es tu exposición. No puedes evaluarte a ti mismo.', 'warn');
     return;
   }
 
   if (state.alreadyEvaluatedActive) {
     $('#evaluation-form').classList.add('hidden');
+    resetDraft();
     showMessage('Tu evaluación para este ponente ya fue registrada. Espera a la siguiente exposición.', 'ok');
     return;
   }
 
+  const presenterId = state.activePresenter.id;
+  if (currentFormPresenterId !== presenterId) {
+    resetDraft();
+    currentFormPresenterId = presenterId;
+    renderCriteria();
+  } else if (!$('#criteria-container').children.length) {
+    renderCriteria();
+  }
+
   showMessage('Evaluación activa. Completa los cuatro criterios y envía tu evaluación.', 'ok');
   $('#evaluation-form').classList.remove('hidden');
-  renderCriteria();
+  applyDraft();
+
+  const submitBtn = $('#submit-btn');
+  submitBtn.disabled = isSubmitting;
+  submitBtn.textContent = isSubmitting ? 'Guardando...' : 'Enviar evaluación';
 }
 
 function renderCriteria() {
@@ -165,9 +216,21 @@ $('#login-form').addEventListener('submit', async (event) => {
   }
 });
 
+$('#criteria-container').addEventListener('change', (event) => {
+  if (event.target?.matches('input[type="radio"]')) {
+    const key = event.target.name.replace(/^score-/, '');
+    draftScores[key] = Number(event.target.value);
+  }
+});
+
+$('#comment').addEventListener('input', (event) => {
+  draftComment = event.target.value;
+});
+
 $('#evaluation-form').addEventListener('submit', async (event) => {
   event.preventDefault();
-  if (!state?.canEvaluate) return;
+  if (!state?.canEvaluate || isSubmitting) return;
+  captureDraft();
 
   const scores = {};
   for (const c of state.criteria) {
@@ -180,6 +243,7 @@ $('#evaluation-form').addEventListener('submit', async (event) => {
   }
 
   const submitBtn = $('#submit-btn');
+  isSubmitting = true;
   submitBtn.disabled = true;
   submitBtn.textContent = 'Guardando...';
 
@@ -194,11 +258,14 @@ $('#evaluation-form').addEventListener('submit', async (event) => {
       })
     });
     $('#evaluation-form').reset();
+    resetDraft();
     await loadState();
   } catch (err) {
     alert(err.message);
     submitBtn.disabled = false;
     submitBtn.textContent = 'Enviar evaluación';
+  } finally {
+    isSubmitting = false;
   }
 });
 
