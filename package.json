@@ -1,0 +1,14 @@
+{
+  "name": "peer-evaluation-presentations-app",
+  "version": "1.0.0",
+  "description": "App web para evaluar exposiciones entre estudiantes, con activación docente y estadísticas por ponente/evaluador.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

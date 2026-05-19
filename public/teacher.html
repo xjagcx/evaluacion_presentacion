@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel del profesor</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="header">
+      <div>
+        <div class="badge">Panel docente</div>
+        <h1>Control de evaluación</h1>
+        <p>Activa el ponente actual, revisa estadísticas y descarga los registros.</p>
+      </div>
+      <a class="button secondary" href="/">Vista estudiante</a>
+    </section>
+
+    <section id="login-card" class="card grid two">
+      <div>
+        <h2>Acceso del profesor</h2>
+        <p>Ingresa el PIN para activar evaluaciones y ver resultados.</p>
+      </div>
+      <form id="teacher-login-form">
+        <label for="pin-input">PIN</label>
+        <input id="pin-input" type="password" autocomplete="current-password" placeholder="PIN del profesor" required />
+        <div style="height:14px"></div>
+        <button type="submit">Entrar</button>
+      </form>
+    </section>
+
+    <section id="dashboard" class="hidden grid">
+      <div class="card">
+        <div class="header" style="margin-bottom:0">
+          <div>
+            <span id="current-pill" class="pill">Estado</span>
+            <h2 id="current-title">Sin evaluación activa</h2>
+            <p id="current-topic">Selecciona un ponente para abrir la evaluación.</p>
+          </div>
+          <div class="actions">
+            <button id="close-btn" class="secondary">Cerrar evaluación</button>
+            <button id="logout-btn" class="secondary">Salir</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpis" id="kpi-container"></div>
+
+      <div class="card">
+        <div class="header">
+          <div>
+            <h2>Ponentes y estadísticas recibidas</h2>
+            <p>Haz clic en el nombre para ver detalle por estudiante.</p>
+          </div>
+          <div class="actions">
+            <button id="export-stats-btn" class="secondary">Descargar estadísticas CSV</button>
+            <button id="export-evaluations-btn" class="secondary">Descargar evaluaciones CSV</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Ponente</th>
+                <th>Tema</th>
+                <th>Evaluaciones</th>
+                <th>Dominio</th>
+                <th>Ponente</th>
+                <th>Material</th>
+                <th>Tiempo</th>
+                <th>Calif. /10</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="presenters-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Actividad por evaluador</h2>
+        <p>Haz clic en un nombre para revisar a quiénes ha evaluado.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Estudiante</th>
+                <th>Evaluaciones enviadas</th>
+                <th>Promedio otorgado /10</th>
+              </tr>
+            </thead>
+            <tbody id="evaluators-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Administración</h2>
+        <p>Usa estas opciones solo para pruebas o correcciones durante la sesión.</p>
+        <div class="actions">
+          <button id="reset-all-btn" class="danger">Borrar todo el registro</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section id="detail-panel" class="detail-panel hidden">
+    <div class="detail-content">
+      <div class="header">
+        <div>
+          <div class="badge">Detalle</div>
+          <h2 id="detail-title">Detalle</h2>
+          <p id="detail-subtitle"></p>
+        </div>
+        <button id="close-detail-btn" class="secondary">Cerrar</button>
+      </div>
+      <div id="detail-body"></div>
+    </div>
+  </section>
+
+  <script src="/teacher.js"></script>
+</body>
+</html>

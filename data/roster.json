@@ -1,0 +1,16 @@
+[
+  { "id": "s01", "participation": 1, "name": "Najsha Guadalupe Rodríguez Alcevedo", "topic": "Álgebra lineal" },
+  { "id": "s02", "participation": 3, "name": "Georgina Guerrera Reyes", "topic": "Métodos de integración" },
+  { "id": "s03", "participation": 10, "name": "Danna Ximena Cisneros Morales", "topic": "Método de Runge-Kutta" },
+  { "id": "s04", "participation": 5, "name": "Denisse Estrella García Hernández", "topic": "Métodos de derivación" },
+  { "id": "s05", "participation": 12, "name": "Pablo Daniel López Vizguerra", "topic": "Problemas de optimización, mínimos cuadrados" },
+  { "id": "s06", "participation": 4, "name": "Gael Oswaldo Navarro Garnez", "topic": "Raíces de funciones" },
+  { "id": "s07", "participation": 6, "name": "Ana Yolanda Rivera Aguilar", "topic": "Métodos de interpolación de Lagrange" },
+  { "id": "s08", "participation": 9, "name": "Margarita Guadalupe Sánchez Ranquel", "topic": "Solución de EDOs con el método de Euler" },
+  { "id": "s09", "participation": 2, "name": "Karol Andrea Colmenero Rodríguez", "topic": "Solución de sistemas lineales usando Gauss, Gauss-Jordan" },
+  { "id": "s10", "participation": 8, "name": "Christopher Yahir Loredo Cano", "topic": "Aproximación de funciones con desarrollos de Taylor" },
+  { "id": "s11", "participation": 14, "name": "Pablo Salazar Becerra", "topic": "Curvas de nivel" },
+  { "id": "s12", "participation": 7, "name": "Eduardo Manuel Venegas Meléndez", "topic": "Interpolación con spline cúbicos" },
+  { "id": "s13", "participation": 13, "name": "Alma Acosta", "topic": "Regresión polinomial" },
+  { "id": "s14", "participation": 11, "name": "Emmanuel Guevara", "topic": "Método de Picard" }
+]

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Evaluación de exposiciones</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="header">
+      <div>
+        <div class="badge">Evaluación entre compañeros</div>
+        <h1>Evaluación de exposiciones</h1>
+        <p>Ingresa con tu nombre y evalúa únicamente cuando el profesor active al ponente correspondiente.</p>
+      </div>
+      <a class="button secondary" href="/teacher">Panel profesor</a>
+    </section>
+
+    <section id="login-card" class="card grid two">
+      <div>
+        <h2>Instrucciones</h2>
+        <p>Selecciona tu nombre. Cuando el profesor active una exposición, aparecerá el formulario de evaluación. No puedes evaluarte a ti mismo y solo puedes evaluar una vez a cada ponente.</p>
+        <div class="notice warn">Escala: 1 = insuficiente, 5 = excelente.</div>
+      </div>
+      <form id="login-form">
+        <label for="student-select">Tu nombre</label>
+        <select id="student-select" required>
+          <option value="">Cargando lista...</option>
+        </select>
+        <div style="height:14px"></div>
+        <button type="submit">Entrar</button>
+      </form>
+    </section>
+
+    <section id="app-card" class="hidden grid">
+      <div class="card">
+        <div class="header" style="margin-bottom:0">
+          <div>
+            <div class="badge" id="student-badge">Estudiante</div>
+            <h2 id="welcome-title">Bienvenido</h2>
+            <p id="progress-text">Cargando progreso...</p>
+          </div>
+          <button id="logout-btn" class="secondary">Cambiar estudiante</button>
+        </div>
+      </div>
+
+      <div id="state-notice" class="notice">Cargando estado...</div>
+
+      <div id="presentation-card" class="card hidden">
+        <div class="header">
+          <div>
+            <span id="status-pill" class="pill">Estado</span>
+            <h2 id="presenter-title">Ponente activo</h2>
+            <p id="presenter-topic"></p>
+          </div>
+        </div>
+
+        <form id="evaluation-form">
+          <div id="criteria-container"></div>
+          <label for="comment">Comentario breve opcional</label>
+          <textarea id="comment" placeholder="Ejemplo: buena explicación del algoritmo, faltó justificar mejor el código..."></textarea>
+          <div style="height:14px"></div>
+          <button id="submit-btn" type="submit">Enviar evaluación</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Tu actividad como evaluador</h2>
+        <div id="own-evaluations" class="grid"></div>
+      </div>
+    </section>
+
+    <div class="footer">Aplicación local/desplegable en Render. Los registros se guardan en el servidor.</div>
+  </main>
+
+  <script src="/student.js"></script>
+</body>
+</html>
